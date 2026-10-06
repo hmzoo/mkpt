@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f3ee">
+    <title>Atelier — Fabrique à prompts</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="stylesheet" href="/assets/styles.css">
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="/">
+        <span class="brand-mark">A</span>
+        <span>atelier<span class="brand-subtitle">fabrique à prompts</span></span>
+      </a>
+      <p class="nav-label">ESPACE DE TRAVAIL</p>
+      <nav aria-label="Navigation principale">
+        <button class="nav-link active" data-view="builder"><span>✳</span> Générateur</button>
+        <button class="nav-link" data-view="characters"><span>◉</span> Personnages</button>
+        <button class="nav-link" data-view="locations"><span>⌖</span> Lieux</button>
+        <button class="nav-link" data-view="actions"><span>↗</span> Actions</button>
+        <button class="nav-link" data-view="templates"><span>▤</span> Templates</button>
+      </nav>
+      <div class="sidebar-note">
+        <span class="note-icon">✦</span>
+        <strong>Une idée, mille scènes.</strong>
+        <p>Assemblez vos éléments favoris et donnez vie à vos prompts.</p>
+      </div>
+      <p class="sidebar-footer">VOTRE STUDIO CRÉATIF</p>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="breadcrumb">Atelier <span>/</span> <strong id="crumb-current">Générateur</strong></div>
+        <span class="status"><span></span> Bibliothèque locale</span>
+      </header>
+
+      <section class="view active" id="view-builder">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">VOTRE STUDIO CRÉATIF</p>
+            <h1>Fabriquez votre <span>prochain prompt.</span></h1>
+            <p class="lede">Choisissez un template, composez votre scène et obtenez un prompt prêt à l'emploi.</p>
+          </div>
+          <div class="heading-decoration">✳</div>
+        </div>
+        <div class="builder-grid">
+          <section class="panel builder-panel">
+            <div class="panel-heading">
+              <div><span class="step">01</span><div><h2>Composez votre scène</h2><p>Chaque élément donne une nouvelle couleur à votre histoire.</p></div></div>
+            </div>
+            <form id="builder-form">
+              <label class="field-label" for="build-template">TEMPLATE DE PROMPT</label>
+              <select id="build-template" required></select>
+              <div id="builder-slots"></div>
+              <p class="slot-empty" id="builder-slots-empty">Choisissez un template pour afficher ses éléments à renseigner.</p>
+              <button class="button button-primary generate-button" type="submit"><span>✳</span> Générer le prompt</button>
+            </form>
+          </section>
+          <section class="panel result-panel">
+            <div class="result-heading"><div><p class="eyebrow">LE RÉSULTAT</p><h2>Votre prompt</h2></div><span class="sparkle">✳</span></div>
+            <div class="result-empty" id="result-empty"><span>✧</span><strong>Votre création apparaîtra ici</strong><p>Choisissez vos ingrédients et lancez la génération.</p></div>
+            <div class="result-content hidden" id="result-content">
+              <div class="prompt-output" id="prompt-output" aria-live="polite"></div>
+              <button class="button button-copy" id="copy-button" type="button">Copier le prompt <span>▣</span></button>
+            </div>
+            <div class="result-foot"><span>✦</span> Construit à partir de vos éléments et de vos templates.</div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="view-characters">
+        <div class="page-heading compact"><div><p class="eyebrow">VOTRE BIBLIOTHÈQUE</p><h1>Personnages</h1><p class="lede">Créez vos protagonistes et ajoutez leurs images de référence.</p></div></div>
+        <div class="manager-grid"><section class="panel form-panel">
+          <div class="panel-heading"><div><span class="step">✳</span><div><h2 id="character-form-title">Nouveau personnage</h2><p>Décrivez ce qui le rend unique.</p></div></div></div>
+          <form id="character-form" class="entity-form" data-kind="characters"><input type="hidden" id="character-id"><label class="field-label" for="character-name">NOM</label><input id="character-name" maxlength="120" placeholder="Ex. Amara, exploratrice des étoiles" required><label class="field-label" for="character-characteristics">CARACTÉRISTIQUES</label><textarea id="character-characteristics" rows="5" placeholder="Apparence, personnalité, vêtements, détails à retenir…"></textarea><button class="button button-primary" type="submit">Enregistrer le personnage</button><button class="button button-quiet hidden" type="button" data-cancel="characters">Annuler la modification</button></form>
+        </section><section class="panel collection-panel"><div class="collection-heading"><div><h2>Vos personnages</h2><span class="count" id="characters-count">0</span></div></div><div class="card-list" id="characters-list"></div></section></div>
+      </section>
+
+      <section class="view" id="view-locations">
+        <div class="page-heading compact"><div><p class="eyebrow">VOTRE BIBLIOTHÈQUE</p><h1>Lieux</h1><p class="lede">Des décors familiers ou imaginaires pour planter le cadre.</p></div></div>
+        <div class="manager-grid"><section class="panel form-panel">
+          <div class="panel-heading"><div><span class="step">✳</span><div><h2 id="location-form-title">Nouveau lieu</h2><p>Décrivez l'atmosphère et le décor.</p></div></div></div>
+          <form id="location-form" class="entity-form" data-kind="locations"><input type="hidden" id="location-id"><label class="field-label" for="location-name">NOM</label><input id="location-name" maxlength="120" placeholder="Ex. Jardin suspendu de Nébula" required><label class="field-label" for="location-characteristics">CARACTÉRISTIQUES</label><textarea id="location-characteristics" rows="5" placeholder="Ambiance, époque, couleurs, détails du décor…"></textarea><button class="button button-primary" type="submit">Enregistrer le lieu</button><button class="button button-quiet hidden" type="button" data-cancel="locations">Annuler la modification</button></form>
+        </section><section class="panel collection-panel"><div class="collection-heading"><div><h2>Vos lieux</h2><span class="count" id="locations-count">0</span></div></div><div class="card-list" id="locations-list"></div></section></div>
+      </section>
+
+      <section class="view" id="view-actions">
+        <div class="page-heading compact"><div><p class="eyebrow">VOTRE BIBLIOTHÈQUE</p><h1>Actions</h1><p class="lede">Des gestes, des émotions ou des événements qui font avancer la scène.</p></div></div>
+        <div class="manager-grid"><section class="panel form-panel">
+          <div class="panel-heading"><div><span class="step">✳</span><div><h2 id="action-form-title">Nouvelle action</h2><p>Décrivez ce qui se passe dans la scène.</p></div></div></div>
+          <form id="action-form" class="entity-form" data-kind="actions"><input type="hidden" id="action-id"><label class="field-label" for="action-name">NOM</label><input id="action-name" maxlength="120" placeholder="Ex. Découvrir une porte secrète" required><label class="field-label" for="action-characteristics">CARACTÉRISTIQUES</label><textarea id="action-characteristics" rows="5" placeholder="Mouvement, émotion, intention, détails…"></textarea><button class="button button-primary" type="submit">Enregistrer l'action</button><button class="button button-quiet hidden" type="button" data-cancel="actions">Annuler la modification</button></form>
+        </section><section class="panel collection-panel"><div class="collection-heading"><div><h2>Vos actions</h2><span class="count" id="actions-count">0</span></div></div><div class="card-list" id="actions-list"></div></section></div>
+      </section>
+
+      <section class="view" id="view-templates">
+        <div class="page-heading compact"><div><p class="eyebrow">VOTRE BIBLIOTHÈQUE</p><h1>Templates de prompts</h1><p class="lede">Écrivez une structure réutilisable avec la syntaxe Jinja2.</p></div></div>
+        <div class="manager-grid"><section class="panel form-panel template-form-panel">
+          <div class="panel-heading"><div><span class="step">✳</span><div><h2 id="template-form-title">Nouveau template</h2><p>Insérez les éléments de votre bibliothèque.</p></div></div></div>
+          <form id="template-form" class="entity-form" data-kind="templates">
+            <input type="hidden" id="template-id">
+            <label class="field-label" for="template-name">NOM</label>
+            <input id="template-name" maxlength="120" placeholder="Ex. Portrait fantastique" required>
+            <p class="slot-help">Définissez les emplacements dont votre prompt a besoin. Vous pourrez ensuite insérer leurs variables en un clic.</p>
+            <div class="slot-counts">
+              <label for="template-character-slots">Personnages<input id="template-character-slots" type="number" min="0" max="20" value="1" required></label>
+              <label for="template-location-slots">Lieux<input id="template-location-slots" type="number" min="0" max="20" value="1" required></label>
+              <label for="template-action-slots">Actions<input id="template-action-slots" type="number" min="0" max="20" value="1" required></label>
+            </div>
+            <label class="field-label" for="template-content">CONTENU DU PROMPT</label>
+            <textarea id="template-content" class="code-field" rows="10" placeholder="Composez votre prompt en cliquant sur les variables ci-dessous." required></textarea>
+            <div class="variable-picker" id="template-variable-picker"></div>
+            <button class="button button-primary" type="submit">Enregistrer le template</button>
+            <button class="button button-quiet hidden" type="button" data-cancel="templates">Annuler la modification</button>
+          </form>
+        </section><section class="panel collection-panel"><div class="collection-heading"><div><h2>Vos templates</h2><span class="count" id="templates-count">0</span></div></div><div class="card-list" id="templates-list"></div></section></div>
+      </section>
+      <div class="toast hidden" id="toast" role="status"></div>
+    </main>
+    <script src="/assets/app.js" defer></script>
+  </body>
+</html>
